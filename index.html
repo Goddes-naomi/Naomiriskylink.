@@ -1,101 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Risky Seduction</title>
+  <meta charset="UTF-8">
+  <title>Goddess Naomi - Exclusive</title>
   <style>
     body {
+      background-color: black;
       margin: 0;
-      background: #000;
-      color: #ff0040;
-      font-family: 'Courier New', monospace;
       overflow: hidden;
     }
 
-    .console {
-      padding: 20px;
-      font-size: 1.4em;
-      white-space: pre-line;
-      animation: blink 1s step-end infinite;
-    }
-
-    @keyframes blink {
-      50% { opacity: 0.7; }
-    }
-
-    .images-container {
-      display: none;
+    .image-spam {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 20px;
-      overflow-y: scroll;
-      background-color: #000;
-      justify-content: center;
+      border: 2px solid hotpink;
+      border-radius: 5px;
+      max-width: 30vw;
+      max-height: 40vh;
+      object-fit: cover;
+      box-shadow: 0 0 10px deeppink;
     }
 
-    .images-container img {
-      max-width: 300px;
-      border: 2px solid #ff0040;
-      border-radius: 10px;
+    .matrix-text {
+      color: #FF007F;
+      font-family: monospace;
+      font-size: 1em;
+      padding: 20px;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div class="console" id="console"></div>
-  <div class="images-container" id="images"></div>
+  <div class="matrix-text" id="loadingText">
+    Injecting pleasure modules...\nDecrypting forbidden data...\nFinalizing release...
+  </div>
 
   <script>
-    const messages = [
-      'Booting system...',
-      'Locating forbidden content...',
-      'Bypassing firewalls...',
-      'Decrypting visual data...',
-      'Injecting pleasure protocol...',
-      'Verifying adult presence...',
-      'Unlocking Goddess Naomi folder...',
-      'Rendering seductive visuals...'
-    ];
-
     const images = [
-      "GoddessNaomi1.jpg",
-      "GoddessNaomi2.jpg",
-      "GoddessNaomi3.jpg",
-      "GoddessNaomi4.jpg",
-      "GoddessNaomi5.jpg"
+      "00000-2311820418.png",
+      "00000-3921721558.png",
+      "00003-2311820421.png",
+      "00006-1969074463.png",
+      "00015-3366985875.png",
+      "00018-1819379801.png",
+      "00024-525125213.png",
+      "00024-915112853.png",
+      "00026-915112855.png",
+      "00027-2712686459.png",
+      "00031-2311820416.png",
+      "00041-2712686473.png"
     ];
 
-    const consoleEl = document.getElementById('console');
-    const imageContainer = document.getElementById('images');
+    function spawnImage() {
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random() * images.length)];
+      img.className = "image-spam";
+      img.style.top = Math.random() * window.innerHeight + "px";
+      img.style.left = Math.random() * window.innerWidth + "px";
+      document.body.appendChild(img);
 
-    let i = 0;
-    function showMessages() {
-      if (i < messages.length) {
-        consoleEl.innerText += messages[i] + "\n";
-        i++;
-        setTimeout(showMessages, 500);
-      } else {
-        consoleEl.style.display = 'none';
-        imageContainer.style.display = 'flex';
-        showImages();
-      }
+      setTimeout(() => img.remove(), 8000);
     }
 
-    function showImages() {
-      images.forEach(src => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = "Naomi Exclusive";
-        imageContainer.appendChild(img);
-      });
+    function startSpam() {
+      document.getElementById("loadingText").style.display = "none";
+      setInterval(spawnImage, 700);
     }
 
-    showMessages();
+    setTimeout(startSpam, 5000);
   </script>
 </body>
 </html>
