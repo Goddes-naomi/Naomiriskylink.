@@ -45,12 +45,16 @@
       position: absolute;
       max-width: 25vw;
       height: auto;
-      top: calc(10% + 40px);
-      left: calc(10% + 10px + (Math.random() * 50vw));
-      transform: translate(-50%, -50%);
+      top: 10%;
+      left: 10%;
       border: 2px solid red;
       border-radius: 10px;
       z-index: 1;
+      animation: popIn 0.4s ease-out forwards;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.5) translate(-50%, -50%); opacity: 0; }
+      100% { transform: scale(1) translate(-50%, -50%); opacity: 1; }
     }
   </style>
 </head>
@@ -68,7 +72,6 @@
     let index = 0;
     let count = 0;
 
-    // Inserisci qui i nomi ESATTI delle immagini
     const images = [
       "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
       "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
@@ -89,6 +92,9 @@
     clickButton.addEventListener('click', () => {
       const img = document.createElement('img');
       img.src = '/' + images[index];
+      img.style.top = Math.random() * 80 + '%';
+      img.style.left = Math.random() * 80 + '%';
+      img.style.transform = 'translate(-50%, -50%)';
       imageContainer.appendChild(img);
 
       index = (index + 1) % images.length;
@@ -98,4 +104,3 @@
   </script>
 </body>
 </html>
-
