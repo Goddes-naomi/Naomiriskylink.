@@ -1,77 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Goddess Naomi - Exclusive</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naomi Risky Link</title>
   <style>
     body {
       background-color: black;
+      color: red;
+      font-family: 'Courier New', Courier, monospace;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
+      text-align: center;
     }
 
-    .image-spam {
-      position: absolute;
-      border: 2px solid hotpink;
-      border-radius: 5px;
-      max-width: 30vw;
-      max-height: 40vh;
-      object-fit: cover;
-      box-shadow: 0 0 10px deeppink;
+    .intro {
+      font-size: 1.5em;
+      margin-top: 40px;
+      animation: blink 1s step-start infinite;
     }
 
-    .matrix-text {
-      color: #FF007F;
-      font-family: monospace;
-      font-size: 1em;
-      padding: 20px;
-      animation: flicker 1.5s infinite alternate;
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
     }
 
-    @keyframes flicker {
-      from { opacity: 0.4; }
-      to { opacity: 1; }
+    #clickButton {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      padding: 10px 30px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      animation: glow 1s infinite alternate;
+      cursor: pointer;
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px red;
+      }
+      to {
+        box-shadow: 0 0 20px red, 0 0 30px darkred;
+      }
+    }
+
+    #counter {
+      color: red;
+      font-size: 1.5em;
+      font-weight: bold;
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #imageContainer {
+      position: relative;
+      margin-top: 100px;
+    }
+
+    .poppedImage {
+      max-width: 90vw;
+      position: relative;
+      margin-bottom: 20px;
+      border: 2px solid red;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
-  <div class="matrix-text" id="loadingText">
-    Injecting pleasure modules...\nDecrypting forbidden data...\nFinalizing release...
-  </div>
+  <div id="introText" class="intro"></div>
+  <div id="counter">Clicks: 0</div>
+  <button id="clickButton">CLICK!</button>
+  <div id="imageContainer"></div>
 
   <script>
-    const images = [
-      "00000-2311820418.png",
-      "00000-3921721558.png",
-      "00003-2311820421.png",
-      "00006-1969074463.png",
-      "00015-3366985875.png",
-      "00018-1819379801.png",
-      "00024-525125213.png",
-      "00024-915112853.png",
-      "00026-915112855.png",
-      "00027-2712686459.png",
-      "00031-2311820416.png",
-      "00041-2712686473.png"
+    const introLines = [
+      "Accessing system core...",
+      "Injecting erotic payload...",
+      "Disabling safety filters...",
+      "Decrypting image cache...",
+      "Loading private visuals...",
+      "Ready to activate protocol Naomi..."
     ];
 
-    function spawnImage() {
-      const img = document.createElement("img");
-      img.src = images[Math.floor(Math.random() * images.length)];
-      img.className = "image-spam";
-      img.style.top = Math.random() * window.innerHeight + "px";
-      img.style.left = Math.random() * window.innerWidth + "px";
-      document.body.appendChild(img);
+    const introText = document.getElementById("introText");
+    const clickButton = document.getElementById("clickButton");
+    const imageContainer = document.getElementById("imageContainer");
+    const counter = document.getElementById("counter");
 
-      setTimeout(() => img.remove(), 8000);
+    const images = [
+      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
+      "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
+      "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
+      "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png"
+    ];
+
+    let currentIndex = 0;
+    let clickCount = 0;
+
+    function showIntroLines() {
+      let i = 0;
+      function typeNext() {
+        if (i < introLines.length) {
+          introText.innerHTML += introLines[i] + "<br/>";
+          i++;
+          setTimeout(typeNext, 1000);
+        } else {
+          clickButton.style.display = "block";
+        }
+      }
+      typeNext();
     }
 
-    function startSpam() {
-      document.getElementById("loadingText").style.display = "none";
-      setInterval(spawnImage, 700);
-    }
+    clickButton.addEventListener("click", () => {
+      if (currentIndex < images.length) {
+        const img = document.createElement("img");
+        img.src = images[currentIndex];
+        img.classList.add("poppedImage");
+        imageContainer.appendChild(img);
+        currentIndex++;
+        clickCount++;
+        counter.innerText = `Clicks: ${clickCount}`;
+      }
+    });
 
-    setTimeout(startSpam, 5000);
+    showIntroLines();
   </script>
 </body>
 </html>
