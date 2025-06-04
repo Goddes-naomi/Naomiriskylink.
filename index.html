@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Risky Seduction</title>
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #ff0040;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+    }
+
+    .console {
+      padding: 20px;
+      font-size: 1.4em;
+      white-space: pre-line;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.7; }
+    }
+
+    .images-container {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px;
+      overflow-y: scroll;
+      background-color: #000;
+      justify-content: center;
+    }
+
+    .images-container img {
+      max-width: 300px;
+      border: 2px solid #ff0040;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="console" id="console"></div>
+  <div class="images-container" id="images"></div>
+
+  <script>
+    const messages = [
+      'Booting system...',
+      'Locating forbidden content...',
+      'Bypassing firewalls...',
+      'Decrypting visual data...',
+      'Injecting pleasure protocol...',
+      'Verifying adult presence...',
+      'Unlocking Goddess Naomi folder...',
+      'Rendering seductive visuals...'
+    ];
+
+    const images = [
+      "GoddessNaomi1.jpg",
+      "GoddessNaomi2.jpg",
+      "GoddessNaomi3.jpg",
+      "GoddessNaomi4.jpg",
+      "GoddessNaomi5.jpg"
+    ];
+
+    const consoleEl = document.getElementById('console');
+    const imageContainer = document.getElementById('images');
+
+    let i = 0;
+    function showMessages() {
+      if (i < messages.length) {
+        consoleEl.innerText += messages[i] + "\n";
+        i++;
+        setTimeout(showMessages, 500);
+      } else {
+        consoleEl.style.display = 'none';
+        imageContainer.style.display = 'flex';
+        showImages();
+      }
+    }
+
+    function showImages() {
+      images.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = "Naomi Exclusive";
+        imageContainer.appendChild(img);
+      });
+    }
+
+    showMessages();
+  </script>
+</body>
+</html>
