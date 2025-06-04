@@ -7,109 +7,95 @@
   <style>
     body {
       margin: 0;
-      background-color: black;
+      background: black;
       overflow: hidden;
-      color: red;
       font-family: monospace;
+      color: red;
     }
-    .flashing-text {
-      font-size: 2rem;
-      text-align: center;
-      margin-top: 20vh;
-      animation: flash 1s infinite;
+    #clickCount {
+      position: fixed;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      color: red;
+      z-index: 10;
     }
-    @keyframes flash {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-    #click-btn {
+    #clickButton {
       position: fixed;
       bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: red;
+      font-size: 2rem;
+      padding: 20px 50px;
+      background: red;
       color: white;
-      font-size: 2.2rem;
-      padding: 20px 40px;
       border: none;
       border-radius: 12px;
+      font-weight: bold;
       cursor: pointer;
-      z-index: 1000;
-      animation: flash 1.5s infinite;
+      z-index: 10;
+      animation: blink 1s infinite;
     }
-    #click-counter {
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: red;
-      font-size: 2rem;
-      z-index: 1000;
-    }
-    .image-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      overflow: hidden;
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
     }
     .image-container img {
       position: absolute;
-      width: 240px;
+      max-width: 25vw;
       height: auto;
-      object-fit: cover;
-      pointer-events: none;
+      top: calc(10% + 40px);
+      left: calc(10% + 10px + (Math.random() * 50vw));
+      transform: translate(-50%, -50%);
+      border: 2px solid red;
+      border-radius: 10px;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
-  <div class="flashing-text">ACCESSING RISKY ARCHIVE...</div>
-  <div class="flashing-text">UNLOCKING FILES...</div>
-  <div id="click-counter">0</div>
-  <button id="click-btn">CLICK!</button>
-  <div class="image-container" id="image-container"></div>
+
+  <div id="clickCount">0</div>
+  <button id="clickButton">CLICK!</button>
+  <div class="image-container" id="imageContainer"></div>
 
   <script>
+    const imageContainer = document.getElementById('imageContainer');
+    const clickButton = document.getElementById('clickButton');
+    const clickCount = document.getElementById('clickCount');
+
+    let index = 0;
+    let count = 0;
+
+    // Inserisci qui i nomi ESATTI delle immagini
     const images = [
       "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
       "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
       "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
       "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png",
-      "00042-1969074457.png", "00044-1969074459.png", "00048-3921721555.png",
-      "00049-525125209.png", "00053-915112857.png", "00057-1819379805.png",
-      "00062-3366985869.png", "00068-2311820424.png", "00070-2311820426.png",
-      "00071-3366985877.png", "00072-3366985876.png", "00075-915112861.png",
-      "00078-915112863.png", "00082-2712686479.png", "00083-2311820414.png",
-      "00086-525125215.png", "00092-3921721557.png", "00095-3366985867.png",
-      "00100-2712686457.png", "00101-2311820420.png", "00103-2311820422.png",
-      "00106-1969074461.png", "00109-1819379803.png", "00110-3366985873.png",
-      "00113-915112859.png", "00117-3921721560.png", "00119-2311820423.png",
-      "00120-525125211.png"
+      "00045-4215151308.png", "00048-3921721560.png", "00053-3921721565.png",
+      "00055-3921721567.png", "00059-3921721571.png", "00060-3921721572.png",
+      "00061-3921721573.png", "00062-3921721574.png", "00063-3921721575.png",
+      "00064-3921721576.png", "00065-3921721577.png", "00066-3921721578.png",
+      "00067-3921721579.png", "00068-3921721580.png", "00069-3921721581.png",
+      "00070-3921721582.png", "00071-3921721583.png", "00072-3921721584.png",
+      "00073-3921721585.png", "00074-3921721586.png", "00075-3921721587.png",
+      "00076-3921721588.png", "00077-3921721589.png", "00078-3921721590.png",
+      "00079-3921721591.png", "00080-3921721592.png", "00081-3921721593.png",
+      "00082-3921721594.png"
     ];
 
-    let clickCount = 0;
+    clickButton.addEventListener('click', () => {
+      const img = document.createElement('img');
+      img.src = '/' + images[index];
+      imageContainer.appendChild(img);
 
-    const clickBtn = document.getElementById("click-btn");
-    const counter = document.getElementById("click-counter");
-    const container = document.getElementById("image-container");
-
-    clickBtn.addEventListener("click", () => {
-      const imageIndex = clickCount % images.length;
-      const img = document.createElement("img");
-      img.src = images[imageIndex];
-
-      const x = Math.random() * (window.innerWidth - 240);
-      const y = Math.random() * (window.innerHeight - 240);
-
-      img.style.left = `${x}px`;
-      img.style.top = `${y}px`;
-
-      container.appendChild(img);
-      clickCount++;
-      counter.textContent = clickCount;
+      index = (index + 1) % images.length;
+      count++;
+      clickCount.innerText = count;
     });
   </script>
 </body>
 </html>
+
