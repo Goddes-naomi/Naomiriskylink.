@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Naomi Risky Link</title>
   <style>
     body {
@@ -12,79 +12,107 @@
       font-family: monospace;
       overflow: hidden;
     }
-    .click-button {
+
+    #image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    .image {
+      position: absolute;
+      width: 200px;
+      height: auto;
+      z-index: 1;
+    }
+
+    #clickButton {
       position: fixed;
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 16px 32px;
-      background: red;
+      padding: 20px 40px;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: red;
       color: white;
       border: none;
-      font-size: 1.5em;
-      font-weight: bold;
-      border-radius: 8px;
-      animation: flash 1s infinite;
-      z-index: 9999;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 1000;
+      animation: blink 1s infinite;
     }
-    .counter {
+
+    #clickCounter {
       position: fixed;
-      bottom: 80px;
+      bottom: 90px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 2em;
+      font-size: 32px;
       color: red;
-      z-index: 9999;
+      z-index: 1000;
     }
-    @keyframes flash {
-      0%, 100% { background-color: red; }
-      50% { background-color: darkred; }
-    }
-    .image-container img {
-      position: absolute;
-      max-width: 200px;
-      height: auto;
-      border: 2px solid red;
-      border-radius: 4px;
-      z-index: 10;
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
-  <div class="counter" id="counter">0</div>
-  <button class="click-button" onclick="spawnImage()">CLICK!</button>
-  <div class="image-container" id="image-container"></div>
+  <div id="image-container"></div>
+  <div id="clickCounter">0</div>
+  <button id="clickButton">CLICK!</button>
 
   <script>
-    const images = [
-      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png", "00006-1969074463.png",
-      "00015-3366985875.png", "00018-1819379801.png", "00024-525125213.png", "00024-915112853.png",
-      "00026-915112855.png", "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png",
-      "00046-1797696791.png", "00047-915112861.png", "00049-2311820425.png", "00054-915112865.png",
-      "00056-2723071897.png", "00057-915112870.png", "00058-915112871.png", "00059-915112872.png",
-      "00060-2311820414.png", "00063-2311820427.png", "00067-2311820413.png", "00070-2311820428.png",
-      "00073-2311820429.png", "00076-2311820430.png", "00080-2311820432.png", "00083-2311820433.png",
-      "00086-2311820434.png", "00089-2311820435.png", "00092-2311820436.png", "00095-2311820437.png",
-      "00098-2311820438.png", "00101-2311820439.png", "00104-2311820440.png", "00107-2311820441.png",
-      "00110-2311820442.png", "00113-2311820443.png", "00116-2311820444.png", "00119-2311820445.png"
+    // Lista delle immagini (nomi ordinati come nella cartella public)
+    const imageList = [
+      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
+      "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
+      "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
+      "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png",
+      // ... aggiungi fino a 40 o tutti i tuoi file
     ];
 
-    let counter = 0;
+    const preloadedImages = [];
+    const imageContainer = document.getElementById("image-container");
+    const clickButton = document.getElementById("clickButton");
+    const clickCounter = document.getElementById("clickCounter");
+    let clickCount = 0;
+    let currentImageIndex = 0;
 
-    function spawnImage() {
-      const container = document.getElementById("image-container");
+    // Precarica tutte le immagini
+    imageList.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      preloadedImages.push(img);
+    });
+
+    clickButton.addEventListener("click", () => {
+      clickCount++;
+      clickCounter.textContent = clickCount;
+
       const img = document.createElement("img");
-      const randomImage = images[Math.floor(Math.random() * images.length)];
+      img.src = imageList[currentImageIndex];
+      img.classList.add("image");
 
-      img.src = `/${randomImage}`;
-      img.style.top = Math.random() * (window.innerHeight - 200) + "px";
-      img.style.left = Math.random() * (window.innerWidth - 200) + "px";
+      // Posizione random nello schermo
+      const maxX = window.innerWidth - 200;
+      const maxY = window.innerHeight - 200;
+      const x = Math.floor(Math.random() * maxX);
+      const y = Math.floor(Math.random() * maxY);
 
-      container.appendChild(img);
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
 
-      counter++;
-      document.getElementById("counter").textContent = counter;
-    }
+      imageContainer.appendChild(img);
+
+      currentImageIndex = (currentImageIndex + 1) % imageList.length;
+    });
   </script>
 </body>
 </html>
+
