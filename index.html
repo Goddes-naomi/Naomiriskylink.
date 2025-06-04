@@ -44,18 +44,10 @@
       50% { opacity: 0.4; }
     }
 
-    .image-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
     .image-container img {
       position: absolute;
       width: 200px;
       height: auto;
-      top: calc(20% + (Math.random() * 60%));
-      left: calc(10% + (Math.random() * 80%));
       border: 2px solid red;
       border-radius: 10px;
       z-index: 10;
@@ -97,8 +89,11 @@
   button.addEventListener("click", () => {
     const img = document.createElement("img");
     img.src = images[index % images.length];
-    img.style.top = Math.random() * 80 + "%";
-    img.style.left = Math.random() * 80 + "%";
+    
+    // Posizione casuale centrata meglio
+    img.style.top = `${10 + Math.random() * 70}%`;
+    img.style.left = `${10 + Math.random() * 80}%`;
+
     container.appendChild(img);
 
     index++;
@@ -109,3 +104,4 @@
 
 </body>
 </html>
+
