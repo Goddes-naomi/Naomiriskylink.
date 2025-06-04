@@ -2,106 +2,114 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Naomi Risky Link</title>
   <style>
     body {
       margin: 0;
-      background: black;
+      background-color: black;
       overflow: hidden;
+      color: red;
       font-family: monospace;
     }
-
-    #button {
+    .flashing-text {
+      font-size: 2rem;
+      text-align: center;
+      margin-top: 20vh;
+      animation: flash 1s infinite;
+    }
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    #click-btn {
       position: fixed;
       bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 16px 32px;
-      background: red;
+      background-color: red;
       color: white;
-      font-size: 24px;
-      font-weight: bold;
+      font-size: 2.2rem;
+      padding: 20px 40px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
-      animation: blink 1s infinite;
       z-index: 1000;
+      animation: flash 1.5s infinite;
     }
-
-    #counter {
+    #click-counter {
       position: fixed;
       bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
       color: red;
-      font-size: 24px;
-      font-weight: bold;
-      z-index: 999;
+      font-size: 2rem;
+      z-index: 1000;
     }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
+    .image-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: hidden;
     }
-
     .image-container img {
       position: absolute;
-      width: 200px;
+      width: 240px;
       height: auto;
-      border: 2px solid red;
-      border-radius: 10px;
-      z-index: 10;
+      object-fit: cover;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
+  <div class="flashing-text">ACCESSING RISKY ARCHIVE...</div>
+  <div class="flashing-text">UNLOCKING FILES...</div>
+  <div id="click-counter">0</div>
+  <button id="click-btn">CLICK!</button>
+  <div class="image-container" id="image-container"></div>
 
-<div id="counter">0</div>
-<button id="button">CLICK!</button>
-<div class="image-container" id="container"></div>
+  <script>
+    const images = [
+      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
+      "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
+      "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
+      "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png",
+      "00042-1969074457.png", "00044-1969074459.png", "00048-3921721555.png",
+      "00049-525125209.png", "00053-915112857.png", "00057-1819379805.png",
+      "00062-3366985869.png", "00068-2311820424.png", "00070-2311820426.png",
+      "00071-3366985877.png", "00072-3366985876.png", "00075-915112861.png",
+      "00078-915112863.png", "00082-2712686479.png", "00083-2311820414.png",
+      "00086-525125215.png", "00092-3921721557.png", "00095-3366985867.png",
+      "00100-2712686457.png", "00101-2311820420.png", "00103-2311820422.png",
+      "00106-1969074461.png", "00109-1819379803.png", "00110-3366985873.png",
+      "00113-915112859.png", "00117-3921721560.png", "00119-2311820423.png",
+      "00120-525125211.png"
+    ];
 
-<script>
-  const images = [
-    "00000-2311820418.png", "00000-3921721558.png", "00000-634323289.png",
-    "00001-3032044747.png", "00001-3741942516.png", "00002-2214932418.png",
-    "00002-634323291.png", "00003-2311820421.png", "00005-1651017462.png",
-    "00005-2702294627.png", "00006-1969074463.png", "00006-3032044752.png",
-    "00006-634323295.png", "00009-547416710.png", "00010-2702294632.png",
-    "00010-634323299.png", "00011-3153876040.png", "00013-981262170.png",
-    "00014-2003401364.png", "00015-2267749591.png", "00015-3366985875.png",
-    "00016-547416717.png", "00017-2214932433.png", "00018-1819379801.png",
-    "00022-2732396077.png", "00022-2895341385.png", "00022-981262179.png",
-    "00023-915112852.png", "00023-981262180.png", "00024-1170554777.png",
-    "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
-    "00027-2712686459.png", "00028-1170554784.png", "00028-2732396083.png",
-    "00028-2962647160.png", "00031-2311820416.png", "00035-2962647167.png",
-    "00038-2088629085.png", "00041-2712686473.png", "00042-1935006574.png",
-    "00042-3623616159.png", "00043-2712686475.png", "00053-2008483632.png",
-    "00057-3603623867.png", "00065-3603623875.png", "00095-2119825978.png"
-  ];
+    let clickCount = 0;
 
-  let index = 0;
-  let clickCount = 0;
-  const button = document.getElementById("button");
-  const counter = document.getElementById("counter");
-  const container = document.getElementById("container");
+    const clickBtn = document.getElementById("click-btn");
+    const counter = document.getElementById("click-counter");
+    const container = document.getElementById("image-container");
 
-  button.addEventListener("click", () => {
-    const img = document.createElement("img");
-    img.src = images[index % images.length];
-    
-    // Posizione casuale centrata meglio
-    img.style.top = `${10 + Math.random() * 70}%`;
-    img.style.left = `${10 + Math.random() * 80}%`;
+    clickBtn.addEventListener("click", () => {
+      const imageIndex = clickCount % images.length;
+      const img = document.createElement("img");
+      img.src = images[imageIndex];
 
-    container.appendChild(img);
+      const x = Math.random() * (window.innerWidth - 240);
+      const y = Math.random() * (window.innerHeight - 240);
 
-    index++;
-    clickCount++;
-    counter.innerText = clickCount;
-  });
-</script>
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
 
+      container.appendChild(img);
+      clickCount++;
+      counter.textContent = clickCount;
+    });
+  </script>
 </body>
 </html>
-
