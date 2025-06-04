@@ -1,154 +1,90 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Naomi Risky Link</title>
   <style>
     body {
       margin: 0;
-      background-color: black;
+      background: black;
       color: red;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: monospace;
       overflow: hidden;
-      position: relative;
     }
-
-    .intro {
-      font-size: 1.5em;
-      margin-top: 40px;
-      text-align: center;
-      animation: blink 1s step-start infinite;
-    }
-
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    #clickButton {
+    .click-button {
       position: fixed;
-      bottom: 40px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 16px 32px;
+      background: red;
+      color: white;
+      border: none;
+      font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 8px;
+      animation: flash 1s infinite;
+      z-index: 9999;
+    }
+    .counter {
+      position: fixed;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 2em;
-      padding: 10px 30px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      animation: glow 1s infinite alternate;
-      cursor: pointer;
-      z-index: 1000;
-    }
-
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 10px red;
-      }
-      to {
-        box-shadow: 0 0 20px red, 0 0 30px darkred;
-      }
-    }
-
-    #counter {
       color: red;
-      font-size: 1.5em;
-      font-weight: bold;
-      position: fixed;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1001;
+      z-index: 9999;
     }
-
-    #imageContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+    @keyframes flash {
+      0%, 100% { background-color: red; }
+      50% { background-color: darkred; }
     }
-
-    .poppedImage {
+    .image-container img {
       position: absolute;
-      width: 300px;
+      max-width: 200px;
+      height: auto;
       border: 2px solid red;
-      border-radius: 6px;
+      border-radius: 4px;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
-  <div id="introText" class="intro"></div>
-  <div id="counter">0</div>
-  <button id="clickButton">CLICK!</button>
-  <div id="imageContainer"></div>
+  <div class="counter" id="counter">0</div>
+  <button class="click-button" onclick="spawnImage()">CLICK!</button>
+  <div class="image-container" id="image-container"></div>
 
   <script>
-    const introLines = [
-      "Accessing system core...",
-      "Injecting erotic payload...",
-      "Disabling safety filters...",
-      "Decrypting image cache...",
-      "Loading private visuals...",
-      "Ready to activate protocol Naomi..."
-    ];
-
-    const introText = document.getElementById("introText");
-    const clickButton = document.getElementById("clickButton");
-    const imageContainer = document.getElementById("imageContainer");
-    const counter = document.getElementById("counter");
-
     const images = [
-      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png",
-      "00006-1969074463.png", "00015-3366985875.png", "00018-1819379801.png",
-      "00024-525125213.png", "00024-915112853.png", "00026-915112855.png",
-      "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png"
+      "00000-2311820418.png", "00000-3921721558.png", "00003-2311820421.png", "00006-1969074463.png",
+      "00015-3366985875.png", "00018-1819379801.png", "00024-525125213.png", "00024-915112853.png",
+      "00026-915112855.png", "00027-2712686459.png", "00031-2311820416.png", "00041-2712686473.png",
+      "00046-1797696791.png", "00047-915112861.png", "00049-2311820425.png", "00054-915112865.png",
+      "00056-2723071897.png", "00057-915112870.png", "00058-915112871.png", "00059-915112872.png",
+      "00060-2311820414.png", "00063-2311820427.png", "00067-2311820413.png", "00070-2311820428.png",
+      "00073-2311820429.png", "00076-2311820430.png", "00080-2311820432.png", "00083-2311820433.png",
+      "00086-2311820434.png", "00089-2311820435.png", "00092-2311820436.png", "00095-2311820437.png",
+      "00098-2311820438.png", "00101-2311820439.png", "00104-2311820440.png", "00107-2311820441.png",
+      "00110-2311820442.png", "00113-2311820443.png", "00116-2311820444.png", "00119-2311820445.png"
     ];
 
-    let currentIndex = 0;
-    let clickCount = 0;
+    let counter = 0;
 
-    function showIntroLines() {
-      let i = 0;
-      function typeNext() {
-        if (i < introLines.length) {
-          introText.innerHTML += introLines[i] + "<br/>";
-          i++;
-          setTimeout(typeNext, 1000);
-        } else {
-          clickButton.style.display = "block";
-        }
-      }
-      typeNext();
+    function spawnImage() {
+      const container = document.getElementById("image-container");
+      const img = document.createElement("img");
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+
+      img.src = `/${randomImage}`;
+      img.style.top = Math.random() * (window.innerHeight - 200) + "px";
+      img.style.left = Math.random() * (window.innerWidth - 200) + "px";
+
+      container.appendChild(img);
+
+      counter++;
+      document.getElementById("counter").textContent = counter;
     }
-
-    clickButton.addEventListener("click", () => {
-      if (currentIndex < images.length) {
-        const img = document.createElement("img");
-        img.src = images[currentIndex];
-        img.classList.add("poppedImage");
-
-        // Calcola posizione casuale all'interno della finestra
-        const maxLeft = window.innerWidth - 300; // Larghezza immagine
-        const maxTop = window.innerHeight - 300; // Altezza immagine
-        const left = Math.random() * maxLeft;
-        const top = Math.random() * maxTop;
-
-        img.style.left = `${left}px`;
-        img.style.top = `${top}px`;
-
-        imageContainer.appendChild(img);
-        currentIndex++;
-        clickCount++;
-        counter.innerText = clickCount;
-      }
-    });
-
-    showIntroLines();
   </script>
 </body>
 </html>
-
