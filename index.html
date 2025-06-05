@@ -35,8 +35,8 @@
       bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      padding: 20px 40px;
-      font-size: 2rem;
+      padding: 30px 60px;
+      font-size: 2.5rem;
       background-color: red;
       color: black;
       border: none;
@@ -46,10 +46,10 @@
 
     .click-counter {
       position: fixed;
-      bottom: 80px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 2rem;
+      font-size: 2.5rem;
       color: red;
       z-index: 5;
     }
@@ -93,8 +93,50 @@
   <script>
     const imageContainer = document.getElementById('imageContainer');
     const counter = document.getElementById('counter');
-    const totalImages = 40;
     let clickCount = 0;
+
+    const imageList = [
+      "00000-2311820418.png",
+      "00000-3921721558.png",
+      "00003-2311820421.png",
+      "00006-1969074463.png",
+      "00015-3366985875.png",
+      "00018-1819379801.png",
+      "00024-525125213.png",
+      "00024-915112853.png",
+      "00026-915112855.png",
+      "00027-2712686459.png",
+      "00031-2311820416.png",
+      "00041-2712686473.png",
+      "00033-1844010749.png",
+      "00035-3841730631.png",
+      "00036-1876908310.png",
+      "00037-1876908311.png",
+      "00038-2311820456.png",
+      "00039-2311820457.png",
+      "00040-2311820458.png",
+      "00042-1876908312.png",
+      "00043-1876908313.png",
+      "00044-1876908314.png",
+      "00045-1876908315.png",
+      "00046-1876908316.png",
+      "00047-1876908317.png",
+      "00048-1876908318.png",
+      "00049-1876908319.png",
+      "00050-1876908320.png",
+      "00051-1876908321.png",
+      "00052-1876908322.png",
+      "00053-1876908323.png",
+      "00054-1876908324.png",
+      "00055-1876908325.png",
+      "00056-1876908326.png",
+      "00057-1876908327.png",
+      "00058-1876908328.png",
+      "00059-1876908329.png",
+      "00060-1876908330.png",
+      "00061-1876908331.png",
+      "00062-1876908332.png"
+    ];
 
     function getRandomPosition() {
       const x = Math.floor(Math.random() * (window.innerWidth - 220));
@@ -106,9 +148,9 @@
       clickCount++;
       counter.textContent = clickCount;
 
-      const index = (clickCount - 1) % totalImages;
+      const index = (clickCount - 1) % imageList.length;
       const img = document.createElement('img');
-      img.src = `/000${index.toString().padStart(2, '0')}-23118204${18 + index}.png`;
+      img.src = `/${imageList[index]}`;
 
       const { x, y } = getRandomPosition();
       img.style.left = `${x}px`;
