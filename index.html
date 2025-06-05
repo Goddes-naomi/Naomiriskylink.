@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Naomi Risky Link</title>
+  <title>Risky Naomi</title>
   <style>
     body {
       margin: 0;
+      padding: 0;
       background-color: black;
+      color: red;
+      font-family: 'Arial', sans-serif;
       overflow: hidden;
-      font-family: Arial, sans-serif;
     }
 
     .intro {
@@ -17,105 +19,103 @@
       width: 100%;
       height: 100%;
       background-color: black;
-      color: red;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 2em;
-      animation: blink 1s step-start 0s infinite;
-      z-index: 1000;
+      z-index: 10;
+      font-size: 2rem;
+      text-align: center;
+      animation: fadeOut 2s ease forwards;
+      animation-delay: 3s;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-
-    #click-button {
+    .click-button {
       position: fixed;
-      bottom: 20px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
-      background-color: red;
-      color: white;
-      font-size: 2em;
       padding: 20px 40px;
+      font-size: 2rem;
+      background-color: red;
+      color: black;
       border: none;
-      border-radius: 10px;
       cursor: pointer;
-      z-index: 999;
+      z-index: 5;
     }
 
-    #counter {
+    .click-counter {
       position: fixed;
       bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
+      font-size: 2rem;
       color: red;
-      font-size: 2em;
-      z-index: 999;
+      z-index: 5;
     }
 
     .image-container {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
     }
 
     .image-container img {
       position: absolute;
-      width: 250px;
+      width: 200px;
       height: auto;
-      object-fit: cover;
-      pointer-events: none;
+      object-fit: contain;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="intro" id="intro">
-    <p class="intro-text">Welcome to my secret zone</p>
-    <p class="intro-text">Only for the brave...</p>
-    <p class="intro-text">Naomi is watching you 👁️</p>
+  <div class="intro">
+    <p>WELCOME TO</p>
+    <p>NAOMI'S WORLD</p>
+    <p>GET READY TO CLICK...</p>
   </div>
 
+  <div class="click-counter" id="counter">0</div>
+  <button class="click-button" onclick="handleClick()">CLICK!</button>
   <div class="image-container" id="imageContainer"></div>
-  <div id="counter">0</div>
-  <button id="click-button">CLICK!</button>
 
   <script>
-    const imageContainer = document.getElementById("imageContainer");
-    const counter = document.getElementById("counter");
-    const button = document.getElementById("click-button");
-
-    // Genera i nomi delle immagini da 00000 a 00039
+    const imageContainer = document.getElementById('imageContainer');
+    const counter = document.getElementById('counter');
     const totalImages = 40;
-    const imageNames = Array.from({length: totalImages}, (_, i) => {
-      return `pubblic/${String(i).padStart(5, '0')}-2311820418.png`;
-    });
-
-    let currentIndex = 0;
     let clickCount = 0;
 
-    button.addEventListener("click", () => {
-      const img = document.createElement("img");
-      img.src = imageNames[currentIndex];
-      img.style.top = Math.random() * (window.innerHeight - 300) + "px";
-      img.style.left = Math.random() * (window.innerWidth - 300) + "px";
-      imageContainer.appendChild(img);
+    function getRandomPosition() {
+      const x = Math.floor(Math.random() * (window.innerWidth - 220));
+      const y = Math.floor(Math.random() * (window.innerHeight - 300));
+      return { x, y };
+    }
 
+    function handleClick() {
       clickCount++;
       counter.textContent = clickCount;
 
-      currentIndex = (currentIndex + 1) % imageNames.length;
-    });
+      const index = (clickCount - 1) % totalImages;
+      const img = document.createElement('img');
+      img.src = `/000${index.toString().padStart(2, '0')}-23118204${18 + index}.png`;
 
-    // Nasconde le frasi dopo 4 secondi
-    setTimeout(() => {
-      document.getElementById("intro").style.display = "none";
-    }, 4000);
+      const { x, y } = getRandomPosition();
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
+
+      imageContainer.appendChild(img);
+    }
   </script>
 </body>
 </html>
